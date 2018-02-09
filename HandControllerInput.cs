@@ -49,13 +49,6 @@ public class HandControllerInput : MonoBehaviour {
 	void Update () {
 		device = SteamVR_Controller.Input((int)trackedObj.index); // pairs device to trackedobject in scene
 
-		if(device.GetPress(SteamVR_Controller.ButtonMask.Grip)){
-			movementDirection = playerCam.transform.forward;
-			movementDirection = new Vector3(movementDirection.x,0,movementDirection.z);
-			movementDirection *= moveSpeed * Time.deltaTime;
-			player.transform.position += movementDirection;
-		}
-
 		if(isDashing){
 			float distCovered = (Time.time - startTime) * dashSpeed;
         	float fracJourney = distCovered / journeyLength;
@@ -66,37 +59,56 @@ public class HandControllerInput : MonoBehaviour {
 			
 		} else {
 			if(device.GetPress(SteamVR_Controller.ButtonMask.Trigger)){ // activates on trigger held down
-				laser.gameObject.SetActive(true);
-				teleportAimerObject.SetActive(true);
+				if(teleport || dash){
+					laser.gameObject.SetActive(true);
+					teleportAimerObject.SetActive(true);
 
-				// setting up teleportation movement mechanic
-				laser.SetPosition(0, gameObject.transform.position);
-				RaycastHit hit;
-				if(Physics.Raycast(transform.position, transform.forward, out hit, 15, laserMask)){ // teleports to point
-					teleportLocation = hit.point;
-					laser.SetPosition(1,teleportLocation);
-					// aimer position
-					teleportAimerObject.transform.position = new Vector3(teleportLocation.x,teleportLocation.y + yNudgeAmt, teleportLocation.z);
-				} else { // teleports to ground below point
-					teleportLocation = transform.position + transform.forward * 15;
-					RaycastHit groundRay;
-					if(Physics.Raycast(teleportLocation, -Vector3.up, out groundRay, 17,laserMask)){
-						teleportLocation = new Vector3(transform.forward.x *15 + transform.position.x,groundRay.point.y,transform.forward.z *15 + transform.position.z);
+					// setting up teleportation movement mechanic
+					laser.SetPosition(0, gameObject.transform.position);
+					RaycastHit hit;
+					if(Physics.Raycast(transform.position, transform.forward, out hit, 15, laserMask)){ // teleports to point
+						teleportLocation = hit.point;
+						laser.SetPosition(1,teleportLocation);
+						// aimer position
+						teleportAimerObject.transform.position = new Vector3(teleportLocation.x,teleportLocation.y + yNudgeAmt, teleportLocation.z);
+					} else { // teleports to ground below point
+						teleportLocation = transform.position + transform.forward * 15;
+						RaycastHit groundRay;
+						if(Physics.Raycast(teleportLocation, -Vector3.up, out groundRay, 17,laserMask)){
+							teleportLocation = new Vector3(transform.forward.x *15 + transform.position.x,groundRay.point.y,transform.forward.z *15 + transform.position.z);
+						}
+						laser.SetPosition(1, transform.forward * 15 + transform.position);
+
+						teleportAimerObject.transform.position = teleportLocation + new Vector3(0, yNudgeAmt, 0);
 					}
-					laser.SetPosition(1, transform.forward * 15 + transform.position);
-
-					teleportAimerObject.transform.position = teleportLocation + new Vector3(0, yNudgeAmt, 0);
+				} else {
+					movementDirection = playerCam.transform.forward;
+					movementDirection = new Vector3(movementDirection.x,0,movementDirection.z);
+					movementDirection *= moveSpeed * Time.deltaTime;
+					player.transform.position += movementDirection;
 				}
 			}
 			if(device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger)){  // activates on trigger release
-				laser.gameObject.SetActive(false);
-				teleportAimerObject.SetActive(false);
-				// player.transform.position = teleportLocation;
-				dashStartPosition = player.transform.position;
-				journeyLength = Vector3.Distance(dashStartPosition, teleportLocation);
-				isDashing = true;
-				startTime = Time.time;
+				if(dash || teleport){
+					laser.gameObject.SetActive(false);
+					teleportAimerObject.SetActive(false);
+					if(dash){
+						dashStartPosition = player.transform.position;
+						journeyLength = Vector3.Distance(dashStartPosition, teleportLocation);
+						isDashing = true;
+						startTime = Time.time;
+					} else 
+						player.transform.position = teleportLocation;
+				}
 			}
 		}
+	}
+
+	void Teleport(){
+
+	}
+
+	void DrawLine(){
+
 	}
 }
