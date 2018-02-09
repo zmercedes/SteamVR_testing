@@ -1,0 +1,10 @@
+# directories
+SteamVR/
+Scenes/
+materials/
+
+# unity tings
+*.meta
+
+# sublime tings
+*.sublime*
