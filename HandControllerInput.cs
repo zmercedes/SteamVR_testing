@@ -30,7 +30,7 @@ public class HandControllerInput : MonoBehaviour {
 
 	// dash
 	public float dashSpeed = 20f;
-	public bool isDashing;
+	private bool isDashing;
 	private float journeyLength;
 	private float startTime;
 	private float lerpTime;
@@ -59,7 +59,7 @@ public class HandControllerInput : MonoBehaviour {
 			
 		} else {
 			if(device.GetPress(SteamVR_Controller.ButtonMask.Trigger)){ // activates on trigger held down
-				if(teleport || dash){
+				if(teleport || dash){ // sets move location for dash/teleport
 					laser.gameObject.SetActive(true);
 					teleportAimerObject.SetActive(true);
 
@@ -81,7 +81,7 @@ public class HandControllerInput : MonoBehaviour {
 
 						teleportAimerObject.transform.position = teleportLocation + new Vector3(0, yNudgeAmt, 0);
 					}
-				} else {
+				} else { // walking movement
 					movementDirection = playerCam.transform.forward;
 					movementDirection = new Vector3(movementDirection.x,0,movementDirection.z);
 					movementDirection *= moveSpeed * Time.deltaTime;
@@ -100,13 +100,5 @@ public class HandControllerInput : MonoBehaviour {
 					player.transform.position = teleportLocation;
 			}
 		}
-	}
-
-	void Teleport(){
-
-	}
-
-	void DrawLine(){
-
 	}
 }
