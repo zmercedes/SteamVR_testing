@@ -89,17 +89,15 @@ public class HandControllerInput : MonoBehaviour {
 				}
 			}
 			if(device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger)){  // activates on trigger release
-				if(dash || teleport){
-					laser.gameObject.SetActive(false);
-					teleportAimerObject.SetActive(false);
-					if(dash){
-						dashStartPosition = player.transform.position;
-						journeyLength = Vector3.Distance(dashStartPosition, teleportLocation);
-						isDashing = true;
-						startTime = Time.time;
-					} else 
-						player.transform.position = teleportLocation;
-				}
+				laser.gameObject.SetActive(false);
+				teleportAimerObject.SetActive(false);
+				if(dash){
+					dashStartPosition = player.transform.position;
+					journeyLength = Vector3.Distance(dashStartPosition, teleportLocation);
+					isDashing = true;
+					startTime = Time.time;
+				} else if(teleport)
+					player.transform.position = teleportLocation;
 			}
 		}
 	}
