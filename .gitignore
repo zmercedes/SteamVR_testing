@@ -2,6 +2,7 @@
 SteamVR/
 Scenes/
 materials/
+prefabs/
 
 # unity tings
 *.meta
