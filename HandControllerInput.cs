@@ -38,7 +38,7 @@ public class HandControllerInput : MonoBehaviour {
 
 	// walk
 	public Transform playerCam;
-	public float moveSpeed = 4f;
+	public float walkSpeed = 4f;
 	private Vector3 movementDirection;
 
 	void Start () {
@@ -84,7 +84,7 @@ public class HandControllerInput : MonoBehaviour {
 				} else { // walking movement
 					movementDirection = playerCam.transform.forward;
 					movementDirection = new Vector3(movementDirection.x,0,movementDirection.z);
-					movementDirection *= moveSpeed * Time.deltaTime;
+					movementDirection *= walkSpeed * Time.deltaTime;
 					player.transform.position += movementDirection;
 				}
 			}
