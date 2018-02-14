@@ -1,3 +1,8 @@
+/* Zoilo Mercedes
+ * Implements hand interaction for grabbing blocks.
+ * could add additional func later
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
