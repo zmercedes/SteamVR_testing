@@ -1,10 +1,6 @@
 ﻿/* Zoilo Mercedes
  * SteamVR input handling
  * can also use SteamVR_Controller.ButtonMask.TouchPad to get input from touchpad
- *
- *
- *
- *
  */
 
 using System.Collections;

@@ -28,19 +28,19 @@ public class HandInteraction : MonoBehaviour {
 		}
 	}
 
-	void GrabObject(Collider col){
-		col.transform.SetParent(gameObject.transform);     // make controller parent
-		col.GetComponent<Rigidbody>().isKinematic = true;  // turn off physics
+	void GrabObject(Collider coll){
+		coll.transform.SetParent(gameObject.transform);     // make controller parent
+		coll.GetComponent<Rigidbody>().isKinematic = true;  // turn off physics
 		device.TriggerHapticPulse(2000);				   // vibrate controller
 		Debug.Log("Grabbing object!");
 	}
 
-	void ThrowObject(Collider col){
-		col.transform.SetParent(null);
-		Rigidbody rigidBody = col.GetComponent<Rigidbody>();
+	void ThrowObject(Collider coll){
+		coll.transform.SetParent(null);
+		Rigidbody rigidBody = coll.GetComponent<Rigidbody>();
 		rigidBody.isKinematic = false;
 		rigidBody.velocity = device.velocity * throwForce;
 		rigidBody.angularVelocity = device.angularVelocity;
-		Debug.Log("Released Object!");
+		Debug.Log("Released object!");
 	}
 }
